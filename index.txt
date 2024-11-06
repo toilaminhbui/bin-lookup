@@ -1,0 +1,74 @@
+const fs = require("fs");
+const { Parser } = require("json2csv");
+
+fs.readFile("output.json", "utf8", (err, data) => {
+  if (err) {
+    console.error("Lỗi khi đọc file JSON:", err);
+    return;
+  }
+
+  try {
+    const jsonData = JSON.parse(data);
+    fs.readFile("9.txt", "utf8", (err, data) => {
+      if (err) {
+        console.error("Lỗi khi đọc file:", err);
+        return;
+      }
+
+      // Tách file thành từng dòng
+      const lines = data.split("\n");
+
+      const results = [];
+
+      // Lặp qua từng dòng dữ liệu
+      lines.forEach((line) => {
+        // Tách dòng thành các phần tử
+        const parts = line.trim().split(/\s+/); // Tách bằng khoảng trắng (bao gồm tab)
+
+        // Lấy 6 số đầu và số lượng tương ứng
+        if (parts.length > 1) {
+          const bin = parts[0]; // Phần tử đầu tiên là 6 số
+          const quantity = parts[1]; // Phần tử thứ hai là số lượng
+
+          results.push({ bin, quantity });
+        }
+      });
+
+      // Xuất kết quả
+      const foundBinsInfo = results
+        .filter((inputBin) => {
+          const entry = jsonData.find((entry) => entry.BIN === inputBin.bin);
+          return entry && entry.Issuer.includes("UNICREDIT BULBANK"); // Kiểm tra BIN và Issuer
+        })
+        .map((inputBin) => {
+          const entry = jsonData.find((entry) => entry.BIN === inputBin.bin);
+          return {
+            quantity: inputBin.quantity,
+            ...entry,
+            // Thêm số lượng vào kết quả
+          };
+        });
+
+      // Xuất kết quả
+      if (foundBinsInfo.length > 0) {
+        const json2csvParser = new Parser();
+        const csv = json2csvParser.parse(foundBinsInfo);
+
+        // Ghi file CSV
+        fs.writeFile("output2.csv", csv, (err) => {
+          if (err) {
+            console.error("Lỗi khi ghi file CSV:", err);
+          } else {
+            console.log("Đã xuất file CSV thành công!");
+          }
+        });
+      } else {
+        console.log("Không tìm thấy BIN nào thỏa mãn điều kiện.");
+      }
+    });
+  } catch (parseErr) {
+    console.error("Lỗi khi phân tích JSON:", parseErr);
+  }
+});
+
+// // Đọc file txt

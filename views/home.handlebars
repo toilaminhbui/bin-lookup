@@ -1,0 +1,199 @@
+<div class="container">
+  <h1 style="text-align: center;"></h1>
+  <h2 style="text-align: center;"></h2>
+  <h3 style="text-align: center;">BIN LOOKUP</h3>
+
+  <!-- 表单开始 -->
+  <form
+    name="binselect"
+    id="binform"
+    action="/"
+    method="post"
+    enctype="multipart/form-data"
+  >
+    <input type="hidden" name="action" value="searchbins" />
+
+    <table>
+      <tr>
+        <td>BINS</td>
+        <td>VENDOR</td>
+        <td colspan="2">LEVEL</td>
+        <td>REGION</td>
+      </tr>
+      <tr>
+        <td>
+          <textarea name="bins" cols="11" rows="6"></textarea>
+        </td>
+        <td style="vertical-align:top;">
+          <table style="width: 100%;">
+            <tr>
+              <td>
+                <input type="checkbox" name="vendor[]" value="Visa" />Visa
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  name="vendor[]"
+                  value="Mastercard"
+                />Mastercard
+              </td>
+            </tr>
+          </table>
+          <table style="margin-top:10px;width: 100%;">
+            <tr><td colspan="2" style="text-align: left">TYPE</td></tr>
+            <tr>
+              <td style="text-align: left">
+                <input type="checkbox" name="type[]" value="Credit" />Credit
+              </td>
+            </tr>
+            <tr>
+              <td style="text-align: left">
+                <input type="checkbox" name="type[]" value="Debit" />Debit
+              </td>
+            </tr>
+          </table>
+        </td>
+        <td>
+          <table style="width: 100%;">
+            <tr><td><input
+                  type="checkbox"
+                  name="level[]"
+                  value="Classic"
+                />Classic</td></tr>
+            <tr><td><input
+                  type="checkbox"
+                  name="level[]"
+                  value="Standard"
+                />Standard</td></tr>
+
+            <tr><td><input
+                  type="checkbox"
+                  name="level[]"
+                  value="Premier"
+                />Premier</td></tr>
+            <tr><td><input
+                  type="checkbox"
+                  name="level[]"
+                  value="Virtual"
+                />Virtual</td></tr>
+
+            <tr><td><input
+                  type="checkbox"
+                  name="level[]"
+                  value="Electron"
+                />Electron</td></tr>
+            <tr><td><input
+                  type="checkbox"
+                  name="level[]"
+                  value="Prepaid"
+                />Prepaid</td></tr>
+            <tr><td><input
+                  type="checkbox"
+                  name="level[]"
+                  value="Purchasing"
+                />Purchasing</td></tr>
+          </table>
+        </td>
+        <td>
+          <table style="width: 100%;">
+            <tr><td><input
+                  type="checkbox"
+                  name="level[]"
+                  value="World"
+                />World</td></tr>
+            <tr><td><input
+                  type="checkbox"
+                  name="level[]"
+                  value="Business"
+                />Business</td></tr>
+            <tr><td><input
+                  type="checkbox"
+                  name="level[]"
+                  value="Gold"
+                />Gold</td></tr>
+            <tr><td><input
+                  type="checkbox"
+                  name="level[]"
+                  value="Platinum"
+                />Platinum</td></tr>
+            <tr><td><input
+                  type="checkbox"
+                  name="level[]"
+                  value="Signature"
+                />Signature</td></tr>
+            <tr><td><input
+                  type="checkbox"
+                  name="level[]"
+                  value="Corporate"
+                />Corporate</td></tr>
+            <tr><td><input
+                  type="checkbox"
+                  name="level[]"
+                  value="Infinite"
+                />Infinite</td></tr>
+
+          </table>
+        </td>
+        <td>
+          <table style="width: 100%;">
+            <tr>
+              <td>Bankname</td>
+              <td><input type="text" name="bank" value="" /></td>
+            </tr>
+            <tr>
+              <td>Country</td>
+              <td><input type="text" name="country" value="" /></td>
+            </tr>
+          </table>
+          <br />
+          <input type="file" accept=".txt" name="files" multiple />
+
+        </td>
+      </tr>
+
+      <td colspan="5" style="text-align:center; background-color: #f0f0f0;">
+        <input type="submit" value="Find" class="find-button" id="findButton" />
+      </td>
+    </table>
+  </form>
+  <!-- 表单结束 -->
+
+  <!-- 结果显示区域 -->
+  <div id="result">
+    {{#if data}}
+      <br />
+      <table style="width:100%; border-collapse: collapse;">
+        <thead>
+          <tr>
+            <th style="text-align: left;">BIN</th>
+            {{#if quantity}}
+              <th style="text-align: left;">Quantity</th>
+            {{/if}}
+            <th style="text-align: left;">Country</th>
+            <th style="text-align: left;">Vendor</th>
+            <th style="text-align: left;">Type</th>
+            <th style="text-align: left;">Level</th>
+            <th style="text-align: left;">Bank</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each data}}
+            <tr>
+              <td style="text-align: left;">{{this.BIN}}</td>
+              {{#if quantity}}
+                <td style="text-align: left;">{{this.quantity}}</td>
+              {{/if}}
+              <td style="text-align: left;">{{this.CountryName}}</td>
+              <td style="text-align: left;">{{this.Brand}}</td>
+              <td style="text-align: left;">{{this.Type}}</td>
+              <td style="text-align: left;">{{this.Category}}</td>
+              <td style="text-align: left;">{{this.Issuer}}</td>
+            </tr>
+          {{/each}}
+
+        </tbody></table>
+    {{/if}}
+  </div>
+</div>
