@@ -71,7 +71,7 @@ app.post("/", upload.array("files", 10), (req, res) => {
     { key: "CountryName", pattern: country },
     { key: "BIN", pattern: bins },
   ];
-  search("./bin-list-data.csv", conditions)
+  search(path.join(__dirname, 'bin-list-data.csv'), conditions)
     .then((jsonData) => {
       if (req.files && req.files.length > 0) {
         let combinedData = ""; // Chuỗi để chứa nội dung của tất cả các file
