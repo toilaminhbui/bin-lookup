@@ -76,17 +76,12 @@ app.post("/", upload.array("files", 10), (req, res) => {
       if (req.files && req.files.length > 0) {
         let combinedData = ""; // Chuỗi để chứa nội dung của tất cả các file
 
-        req.files.forEach((file) => {
-          const filePath = path.join(__dirname, file.path);
-          const fileData = fs.readFileSync(filePath, "utf8");
+       req.files.forEach((file) => {
+          // file.buffer contains the file data in memory
+          const fileData = file.buffer.toString("utf8");
 
-          // Gộp nội dung file vào chuỗi combinedData
+          // Append the file data to combinedData string
           combinedData += fileData + "\n";
-
-          // Xóa file sau khi đã đọc xong
-          fs.unlink(filePath, (err) => {
-            if (err) console.error("Failed to delete file:", err);
-          });
         });
 
         // const filePath = path.join(__dirname, req.file.path);
