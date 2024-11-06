@@ -7,7 +7,8 @@ const { Parser } = require("json2csv");
 
 const { engine } = require("express-handlebars");
 
-const upload = multer({ dest: "uploads/" });
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));
